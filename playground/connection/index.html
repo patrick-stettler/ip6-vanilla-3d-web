@@ -25,6 +25,7 @@
         </div>
         <div class="connector">
             <div class="cylinder"></div>
+            <div class="cylinder cylinder--top"></div>
         </div>
         <div class="cube cube--two">
             <div class="cube_face cube_face--front"></div>
@@ -35,6 +36,20 @@
             <div class="cube_face cube_face--bottom"></div>
         </div>
     </div>
+
+<div id="controls">
+  <label>↕ <input type="range" data-prop="rx"   min="-85"  max="85"  value="15"  step="1"></label>
+  <label>↔ <input type="range" data-prop="ry"   min="-180" max="180" value="35"  step="1"></label>
+  <label>⇲ <input type="range" data-prop="zoom" min="0.3"  max="3"   value="1"   step="0.05"></label>
+</div>
+
+<script>
+  document.querySelectorAll('#controls input[data-prop]').forEach(input => {
+    input.addEventListener('input', () => {
+      document.documentElement.style.setProperty(`--${input.dataset.prop}`, input.value);
+    });
+  });
+</script>
 
 </body>
 
