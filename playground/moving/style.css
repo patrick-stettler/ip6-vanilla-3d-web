@@ -1,0 +1,177 @@
+:root {
+    --rx:   0;
+    --ry:   0;
+    --zoom: 1;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background: #111;
+    font-family: "Poppins", Arial, sans-serif;
+    font-size: 100%;
+    font-weight: 300;
+    color: #444444;
+    perspective: 1400px;
+}
+
+.scene {
+    width: 100%;
+    height: 100%;
+    position: relative; /* wichtig */
+    display: block;      /* Flex entfernen */
+    border: 1px solid red;
+    transform-style: preserve-3d;
+    transform:
+        scale3d(var(--zoom), var(--zoom), var(--zoom))
+        rotateX(calc(var(--rx) * 1deg))
+        rotateY(calc(var(--ry) * 1deg));
+}
+
+/* Cube */
+
+.cube {
+    --size: 200px;
+    width: var(--size);
+    height: var(--size);
+    position: absolute;   /* wichtig für Drag */
+    transform-style: preserve-3d;
+
+    /* neue Variablen für Position */
+    --tx: 0px;
+    --ty: 0px;
+
+    transform:
+        translate3d(var(--tx), var(--ty), var(--tz, 0px))
+        rotateY(0deg);
+}
+
+.cube .cube_face {
+    position: absolute;
+    background: skyblue;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+}
+
+.cube .cube_face--front {
+    transform: translateZ(calc(0.5 * var(--size)));
+    background: red;
+}
+
+.cube .cube_face--back {
+    transform: translateZ(calc(-0.5 * var(--size)));
+    background: blue;
+}
+
+.cube .cube_face--right {
+    transform: translateX(calc(0.5 * var(--size))) rotateY(270deg);
+    background: skyblue;
+}
+
+.cube .cube_face--left {
+    transform: translateX(calc(-0.5 * var(--size))) rotateY(270deg);
+    background: green;
+}
+
+.cube .cube_face--top {
+    transform: translateY(calc(-0.5 * var(--size))) rotateX(90deg);
+    background: violet;
+}
+
+.cube .cube_face--bottom {
+    transform: translateY(calc(0.5 * var(--size))) rotateX(90deg);
+    background: orange;
+}
+
+.cube--one {
+    anchor-name: --cube1;
+    top: 42%;
+    left: 20%;
+}
+
+.cube--two {
+    anchor-name: --cube2;
+    top: 42%;
+    left: 80%;
+}
+
+
+/* Controls */
+
+#controls {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 24px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 12px 24px;
+    z-index: 100;
+}
+
+#controls label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #aaa;
+    font-size: 0.85rem;
+    user-select: none;
+}
+
+#controls input[type="range"] {
+    width: 120px;
+    accent-color: skyblue;
+    cursor: pointer;
+}
+
+/* Connector  */
+
+.connector {
+    position: absolute;
+    left: anchor(--cube1 right);
+    right: anchor(--cube2 left);
+    top: anchor(--cube1 center);
+    height: 40px;
+    transform: translateY(-50%);
+    transform-style: preserve-3d;
+
+}
+
+.cylinder {
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    background: linear-gradient(
+        to bottom,
+        #eee,
+        #aaa,
+        #eee
+    );
+    opacity: 0.5;
+
+    border-radius: 20px;
+
+    box-shadow:
+        inset 0 2px 4px rgba(0,0,0,0.4),
+        inset 0 -2px 4px rgba(255,255,255,0.4);
+}
+
+.cylinder--top {
+    transform: translateY(-50%) rotateX(90deg);
+}
+

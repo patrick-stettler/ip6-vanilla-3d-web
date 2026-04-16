@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html lang="de">
+
+<head>
+	<title>3D-Würfel</title>
+	<meta charset="utf-8">
+	<!-- -->
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="">
+	<link rel="stylesheet" type="text/css" href="">
+	<link rel="stylesheet" type="text/css" href="">
+</head>
+
+<body>
+
+	<div class="scene">
+    <div class="cube cube--one">
+      <div class="cube_face cube_face--front"></div>
+      <div class="cube_face cube_face--back"></div>
+      <div class="cube_face cube_face--right"></div>
+      <div class="cube_face cube_face--left"></div>
+      <div class="cube_face cube_face--top"></div>
+      <div class="cube_face cube_face--bottom"></div>
+    </div>
+    <!--<div class="connector">
+      <div class="cylinder"></div>
+      <div class="cylinder cylinder--top"></div>
+    </div>-->
+    <div class="cube cube--two">
+      <div class="cube_face cube_face--front"></div>
+      <div class="cube_face cube_face--back"></div>
+      <div class="cube_face cube_face--right"></div>
+      <div class="cube_face cube_face--left"></div>
+      <div class="cube_face cube_face--top"></div>
+      <div class="cube_face cube_face--bottom"></div>
+    </div>
+  </div>
+
+  <div id="controls">
+    <label>↕ <input type="range" data-prop="rx"   min="-85"  max="85"  value="0"  step="1"></label>
+    <label>↔ <input type="range" data-prop="ry"   min="0" max="360" value="0"  step="1"></label>
+    <label>⇲ <input type="range" data-prop="zoom" min="0.3"  max="3"   value="1"   step="0.05"></label>
+  </div>
+
+  <script type="text/javascript" src="script.js"></script>
+
+</body>
+
+</html>
