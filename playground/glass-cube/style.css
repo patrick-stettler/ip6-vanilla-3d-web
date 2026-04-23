@@ -31,7 +31,7 @@ body {
 .stack {
   position: relative;
   width:  var(--size);
-  height: calc(3 * var(--size) + 2 * var(--gap));
+  height: calc(4 * var(--size) + 3 * var(--gap));
   transform-style: preserve-3d;
   transform: rotateX(-22deg) rotateY(-28deg);
 }
@@ -43,9 +43,10 @@ body {
   transform-style: preserve-3d;
 }
 
-.cube.blue { top: 0;                                       --c: 58,  92, 252; }
-.cube.teal { top: calc(var(--size) + var(--gap));          --c: 28, 175, 110; }
-.cube.ice  { top: calc(2 * var(--size) + 2 * var(--gap)); --c: 148, 193, 252; }
+.cube.light-green  { top: 0;                                       --c: 100, 220, 120; }
+.cube.light-blue   { top: calc(var(--size) + var(--gap));          --c: 180, 185, 190; --alpha-boost: 0.35; }
+.cube.dark-blue    { top: calc(2 * var(--size) + 2 * var(--gap)); --c: 100, 180, 255; }
+.cube.dark-orange  { top: calc(3 * var(--size) + 3 * var(--gap)); --c: 210,  30,  30; }
 
 .cube_face {
   position: absolute;
