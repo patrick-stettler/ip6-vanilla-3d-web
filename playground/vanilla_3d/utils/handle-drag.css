@@ -1,0 +1,21 @@
+#probe-point {
+    --probe-x: 0;
+    --probe-y: 0;
+    --probe-z: 0;
+
+    position: absolute;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    transform: translateX(calc(var(--probe-x) * var(--display-unit))) translateY(calc(var(--probe-y) * var(--display-unit))) translateZ(calc(var(--probe-z) * var(--display-unit)));
+}
+
+#helper-box {
+    --base-color: white;
+    --border-color: white;
+}
+
+#helper-plane {
+    pointer-events: none;
+    opacity: 0.3;
+}

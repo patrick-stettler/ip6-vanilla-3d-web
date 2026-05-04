@@ -1,0 +1,39 @@
+.axis-helper {
+    place-items: start;
+    --base-transparency: 0%;
+}
+
+.x-axis * {
+    --base-color: green;
+}
+
+.y-axis * {
+    --base-color: red;
+}
+
+.z-axis * {
+    --base-color: blue;
+}
+
+.text {
+    --base-color: transparent;
+    --border-color: transparent;
+    z-index: 10;
+}
+
+.x-axis.text {
+    color: green;
+}
+
+.y-axis.text {
+    color: red;
+}
+
+.z-axis.text {
+    color: blue;
+}
+
+.helper-plane {
+    --border-color: transparent;
+    --base-color: rgba(31, 31, 31, 0.3);
+}

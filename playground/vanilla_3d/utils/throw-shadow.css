@@ -1,0 +1,6 @@
+.shadow {
+    --base-color: #3b3b3b;
+    backface-visibility: visible !important;
+
+    filter: blur(0.5cqw);
+}

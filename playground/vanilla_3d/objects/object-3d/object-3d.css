@@ -1,0 +1,44 @@
+:root {
+    --base-color: #5e5e5e;
+    --base-transparency: 10%;
+
+    --border-color: #262626;
+    --border-transparency: 10%;
+    --border-width: 0.5px;
+
+
+    /* fallback for linter only, will be set dynamically via JS */
+    --display-unit: 0;
+
+    --x: 0;
+    --y: 0;
+    --z: 0;
+
+    --sx: 1;
+    --sy: 1;
+    --sz: 1;
+
+    --rot: matrix3d(1,0,0,0,
+                    0,1,0,0,
+                    0,0,1,0,
+                    0,0,0,1);
+}
+
+.object-3d {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+    transform-style: preserve-3d;
+
+    transform:
+        translate(-50%, -50%)
+        translateX(var(--x, 0px))
+        translateY(var(--y, 0px))
+        translateZ(var(--z, 0px))
+        var(--rot)
+        scale3d(var(--sx, 1), var(--sy, 1), var(--sz, 1));
+
+    left: 50%;
+    top: 50%;
+}

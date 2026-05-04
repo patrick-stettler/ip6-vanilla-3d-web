@@ -1,0 +1,27 @@
+.texture {
+    background-repeat: repeat;
+    background-position: center;
+    background-size:
+            calc(var(--width) * var(--display-unit))
+            calc(var(--depth) * var(--display-unit));
+}
+
+.wood {
+    background-image: url('pictures/wood.jpg');
+}
+
+.stone {
+    background-image: url('pictures/stone.jpg');
+}
+
+.sky {
+    background-image: url('pictures/sky.jpg');
+}
+
+.bark {
+    background-image: url('pictures/bark.jpg');
+}
+
+.brick {
+    background-image: url('pictures/brick.jpg');
+}

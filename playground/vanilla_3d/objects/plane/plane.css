@@ -1,0 +1,11 @@
+.plane {
+    /* logical units */
+    --width: 1;
+    --depth: 1;
+
+    width: calc(var(--width) * var(--display-unit));
+    height: calc(var(--depth) * var(--display-unit));
+
+    background-color: color-mix(in hsl, var(--base-color), transparent var(--base-transparency));
+    border: var(--border-width) solid color-mix(in hsl, var(--border-color), transparent var(--border-transparency));
+}

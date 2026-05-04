@@ -1,0 +1,22 @@
+.triangle-face {
+    backface-visibility: hidden;
+    will-change: transform;
+}
+
+.triangle-face__svg {
+    backface-visibility: hidden;
+    will-change: transform;
+    --base-transparency: 100%;
+}
+
+.triangle-face__poly {
+    fill: var(--base-color);
+    fill-opacity: var(--base-transparency);
+
+    stroke: var(--base-color);
+    stroke-opacity: var(--base-transparency);
+    stroke-width: 0.6;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+}
