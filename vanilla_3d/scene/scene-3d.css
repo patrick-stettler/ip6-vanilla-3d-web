@@ -1,0 +1,67 @@
+
+/* The scene provides the area in which 3d visualizations and operations can take place
+   as well as setting the "camera position".
+   It also serves as the sensitive area for mouse & touch events to rotate the
+   coordinate system of the scene.
+*/
+.scene-3d {
+    container:              scene3d inline-size;
+    perspective:            200vmax;
+    perspective-origin:     right top;
+    position:               relative;
+    overflow:               hidden;
+}
+
+.origin {
+    --origin-x: 0;
+    --origin-y: 0;
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform-origin: center;
+    transform-style: preserve-3d;
+
+    transform:  translate(var(--origin-x), var(--origin-y))
+                rotateX(90deg);
+}
+
+/* provides the logical group for the coordinate system */
+.coords {
+    --display-unit: 0;
+
+    --coords-scale: 1;
+
+    --coords-x: 0;
+    --coords-y: 0;
+    --coords-z: 0;
+
+    --coords-rot: matrix3d(1,0,0,0, 0,1,0,0,  0,0,1,0,  0,0,0,1);
+
+
+    position: absolute;
+
+    transform:
+        translateX(var(--coords-x))
+        translateY(var(--coords-y))
+        translateZ(var(--coords-z))
+        var(--coords-rot)
+        scaleX(var(--coords-scale))
+        scaleY(var(--coords-scale))
+        scaleZ(var(--coords-scale));
+
+    transform-origin: center;
+    transform-style: preserve-3d;
+}
+
+.noSelection {
+    user-select:            none;
+}
+
+.scene-3d.is-panning {
+    cursor: grabbing;
+}
+
+.rotate-cursor {
+    cursor: url("resources/cursors/rotate.png") 16 16, auto;
+}

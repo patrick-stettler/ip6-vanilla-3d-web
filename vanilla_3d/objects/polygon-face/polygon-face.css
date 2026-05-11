@@ -1,0 +1,18 @@
+.polygon-face__svg {
+    --base-transparency: 100%;
+    backface-visibility: hidden;
+    will-change: transform;
+    overflow: visible;
+}
+
+.polygon-face__poly {
+    fill: var(--base-color);
+    fill-opacity: var(--base-transparency);
+
+    stroke: var(--base-color);
+    stroke-opacity: var(--base-transparency);
+    stroke-width: 0.6;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+}

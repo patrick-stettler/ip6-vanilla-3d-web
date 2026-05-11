@@ -1,0 +1,12 @@
+.sphere {
+    --radius: 1;
+    --border-scale: 0.0041;
+}
+
+.sphere-face {
+    position: absolute;
+    background-color: color-mix(in hsl, var(--base-color), transparent 10%);
+    border: max(0.5px, calc(var(--radius) * var(--display-unit) * var(--border-scale))) solid
+            color-mix(in hsl, var(--base-color), transparent 10%);
+    backface-visibility: hidden;
+}

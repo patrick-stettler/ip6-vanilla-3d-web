@@ -1,0 +1,19 @@
+.tetra-face {
+    border: 0;
+
+    background: var(--border-color);
+    clip-path: polygon(50% 0, 0 100%, 100% 100%);
+}
+
+.tetra-face::after {
+    content: "";
+    position: absolute;
+    inset: calc(var(--border-width));
+    background: var(--base-color);
+    clip-path: polygon(0% 100%, 100% 100%, 50% 0%);
+    z-index: -1;
+}
+
+.tetra-face.texture::after {
+    background: transparent;
+}

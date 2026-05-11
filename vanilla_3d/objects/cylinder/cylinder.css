@@ -1,0 +1,9 @@
+.cylinder-side {
+    border: 0;
+    border-top: var(--border-width) solid color-mix(in hsl, var(--border-color), transparent 10%);
+    border-bottom: var(--border-width) solid color-mix(in hsl, var(--border-color), transparent 10%);
+}
+
+.cylinder-cap {
+    border-radius: 50%;
+}
