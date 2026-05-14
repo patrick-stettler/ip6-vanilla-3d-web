@@ -1,0 +1,34 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0d1117;
+  font-family: system-ui, sans-serif;
+}
+
+#scene {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  perspective-origin: center center;
+}
+
+/* ── Cube label ──────────────────────────────────────────────────────────── */
+
+.cube-label {
+  display: block;
+  font-size: calc(0.28 * var(--display-unit));
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  pointer-events: none;
+  width: 100%;
+  padding: 0.1em;
+}
