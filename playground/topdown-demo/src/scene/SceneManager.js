@@ -9,12 +9,12 @@ export { TOP_DOWN_VIEW, createSceneManager };
  */
 
 /**
- * @typedef  { Object } ViewConfig
- * @property { { x: number, z: number } } rotation - initial rotation in degrees.
- * @property { number }                   zoom     - initial zoom level.
+ * @typedef  { Object } ViewConfigType
+ * @property { Object } rotation - initial rotation in degrees.
+ * @property { number } zoom     - initial zoom level.
  */
 
-/** @type { ViewConfig } */
+/** @type { ViewConfigType } */
 const TOP_DOWN_VIEW = { rotation: { x: -90, z: 0 }, zoom: 0.45 };
 
 /**
