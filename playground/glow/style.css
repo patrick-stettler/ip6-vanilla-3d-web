@@ -1,0 +1,143 @@
+:root {
+    --cl-grey: 68, 68, 68;
+    --cl-blue: 55, 101, 255;
+    --cl-orange: 255, 150, 30;
+    --cl-red: 255, 46, 46;
+    --cl-green: 98, 208, 98;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #0d1117;
+    font-family: "Inter", Arial, sans-serif;
+}
+
+#scene {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    perspective-origin: center center;
+}
+
+/* Bodenplatte */
+
+.ground-floor {
+    --base-color: #1e2a3a !important;
+    --base-transparency: 0% !important;
+    --border-color: #3a5a7a !important;
+    --border-transparency: 0% !important;
+    --border-width: 2px !important;
+}
+
+/* Würfel */
+
+.box[data-status="not_started"]     { --c: var(--cl-grey); }
+.box[data-status="ongoing"]         { --c: var(--cl-blue); }
+.box[data-status="failed_one"]      { --c: var(--cl-orange); }
+.box[data-status="failed_twice"]    { --c: var(--cl-red); }
+.box[data-status="passed"]          { --c: var(--cl-green); }
+
+.box .plane {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    background: none;
+    border: none;
+    transition: 
+        opacity 0.4s ease, 
+        box-shadow 0.4s ease, 
+        border-color 0.4s ease, 
+        backdrop-filter 0.4s ease;
+}
+
+.box .plane.top {
+    background:
+        radial-gradient(ellipse 150% 150% at 0% 100%,
+        rgba(255, 255, 255, 0.45) 0%,
+        rgba(255, 255, 255, 0.18) 30%,
+        rgba(255, 255, 255, 0.00) 70%),
+        rgba(var(--c), 0.52);
+    border: 1px solid rgba(255, 255, 255, 0.50);
+}
+
+.box .plane.front {
+    background:
+        linear-gradient(135deg,
+        rgba(255, 255, 255, 0.30) 0%,
+        rgba(255, 255, 255, 0.08) 40%,
+        rgba(255, 255, 255, 0.00) 100%),
+        rgba(var(--c), 0.48);
+    border: 1px solid rgba(255, 255, 255, 0.30);
+    border-top-color: rgba(255, 255, 255, 0.55);
+}
+
+.box .plane.back {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.00) 100%), rgba(var(--c), 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.box .plane.left {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.00) 100%), rgba(var(--c), 0.38);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.box .plane.right {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.00) 100%), rgba(var(--c), 0.32);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.box .plane.bottom {
+    background: rgba(var(--c), 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cube-label {
+    display: block;
+    font-size: calc(0.28 * var(--display-unit, 40px));
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    pointer-events: none;
+    width: 100%;
+    padding: 0.1em;
+}
+
+/* Glow */
+
+#scene.has-selection .box .plane {
+    opacity: 0.15;
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+}
+
+#scene.has-selection .box.is-focused .plane {
+    opacity: 1;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-color: rgba(255, 255, 255, 0.9);
+}
+
+#scene.has-selection .box.is-focused .plane.top {
+    border-color: rgba(255, 255, 255, 1);
+    box-shadow: 
+        0 0 15px  rgba(var(--c), 1.0),
+        0 0 40px  rgba(var(--c), 0.8),
+        0 0 90px  rgba(var(--c), 0.6),
+        inset 0 0 25px rgba(255, 255, 255, 0.8);
+}
+
+#scene.has-selection .box.is-focused .plane:not(.top) {
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 
+        0 0 10px rgba(var(--c), 0.9),
+        0 0 30px rgba(var(--c), 0.7),
+        0 0 60px rgba(var(--c), 0.4);
+}
