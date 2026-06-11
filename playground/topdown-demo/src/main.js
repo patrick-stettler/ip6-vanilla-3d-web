@@ -3,7 +3,7 @@ import { createCube }         from './objects/Cube.js';
 import { createBasePlane }    from './objects/BasePlane.js';
 import { cubes, CUBE_SIZE, CUBE_GAP } from './data/cubes.js';
 
-/** @type { Object } SceneManagerType */
+/** @type { SceneManagerType } */
 const scene = createSceneManager(document.getElementById('scene'));
 
 scene.add(createBasePlane());

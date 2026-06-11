@@ -8,7 +8,7 @@ const PADDING = 1.5;
 
 /**
  * Creates the ground plane sized to fit all cubes with padding on every side.
- * @return { Object } PlaneType
+ * @return { PlaneType }
  * @example
  *     const base = createBasePlane();
  *     scene.addObject(base);
