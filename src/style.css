@@ -6,7 +6,7 @@
 	
 	01. General
     02. Headlines
-	
+    03. Toggle Switch
 	
 	
 /*******************************************************************************************************************************/
@@ -15,81 +15,127 @@
 
 :root {
     --font: "Inter", Arial, sans-serif;
-    --green: #62D062;
-    --orange: #FF961E;
-    --red: #FF2E2E;
-    --blue: #3765FF;
-    --grey: #444444;
-    --white: #ffffff;
+    
+    --cl-module-passed: 98, 208, 98;
+    --cl-module-critical: 255, 150, 30;
+    --cl-module-failed: 255, 46, 46;
+    --cl-module-ongoing: 55, 101, 255;
+    --cl-module-open: 68, 68, 68;
+
+    --cl-bluetone1: 14, 25, 42;
+    --cl-bluetone2: 23, 39, 64;
+    --cl-bluetone3: 61, 82, 114;
+    --cl-bluetone4: 133, 152, 182;
+    --cl-bluetone5: 206, 216, 233;
+    --cl-bluetone6: 235, 239, 245;
+    
+    --cl-white: 255, 255, 255;
 }
 
 * {
 	margin: 0;
 	padding: 0;
-	box-sizing: border-box;
-}
-
-html, body {
-	width: 100%;
-	height: 100%;
-	position: relative;
 }
 
 body {
 	font-family: var(--font);
-	font-size: 10px;
 	font-weight: 300;
-	color: var(--white);
+	color: rgb(var(--cl-white));
+    background: rgb(var(--cl-bluetone1));
 }
+
 
 /*******************************************************************************************************************************/
 /*****Headlines*****************************************************************************************************************/
 /*******************************************************************************************************************************/
 
-h1 {
+h1, h2, h3, h4, h5, h6 {
     font-family: var(--font);
     font-weight: 600; /* SemiBold */
-    font-size: 6.8rem;
-    line-height: 1.1;
+    line-height: 1.2;
     letter-spacing: 0%;
+}
+
+h1 {
+    font-size: 4.5rem;
 }
 
 h2 {
-    font-family: var(--font);
-    font-weight: 600; /* SemiBold */
-    font-size: 5.6rem;
-    line-height: 1.2;
-    letter-spacing: 0%;
+    font-size: 3.5rem;
 }
 
 h3 {
-    font-family: var(--font);
-    font-weight: 600; /* SemiBold */
-    font-size: 4.0rem;
-    line-height: 1.2;
-    letter-spacing: 0%;
+    font-size: 2.5rem;
 }
 
 h4 {
-    font-family: var(--font);
-    font-weight: 600; /* SemiBold */
-    font-size: 3.2rem;
-    line-height: 1.2;
-    letter-spacing: 0%;
+    font-size: 2rem;
 }
 
 h5 {
-    font-family: var(--font);
-    font-weight: 600; /* SemiBold */
-    font-size: 2.6rem;
-    line-height: 1.2;
-    letter-spacing: 0%;
+    font-size: 1.5rem;
 }
 
 h6 {
+    font-size: 1rem;
+}
+
+/*******************************************************************************************************************************/
+/*****Toggle Switch*************************************************************************************************************/
+/*******************************************************************************************************************************/
+
+#view-selector {
+    --switch-width: 5em;
+    --switch-height: 2.5em;
+    --switch-gap: 0.2em;
+    --toggle-size: 2em;
+
+    position: fixed;
+    top: 1.5em;
+    left: 50%;
+    transform: translate(-50%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em; 
+}
+
+#view-selector p {
     font-family: var(--font);
-    font-weight: 600; /* SemiBold */
-    font-size: 1.8rem;
-    line-height: 1.2;
-    letter-spacing: 0%;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+#view-selector label {
+    display: block;
+    position: relative;
+    width: var(--switch-width);
+    height: var(--switch-height);
+    border-radius: var(--switch-width);
+    border: 1px solid rgba(var(--cl-bluetone6), 0.4);
+    cursor: pointer;
+}
+
+#view-selector label::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: var(--switch-gap);
+    transform: translateY(-50%);
+    width: var(--toggle-size);
+    height: var(--toggle-size);
+    border-radius: 100%;
+    background: rgb(var(--cl-bluetone4));
+    transition: all 300ms ease-in-out;
+}
+
+#view-selector input[type="checkbox"]:checked + label::after {
+    left: calc(var(--switch-width) - (var(--toggle-size) + var(--switch-gap)));
+}
+
+#view-selector input[type="checkbox"] {
+    display: none;
+    height: 0;
+    width: 0;
 }
