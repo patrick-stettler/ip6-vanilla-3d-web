@@ -22,7 +22,7 @@ const CUBE_SIZE = 2;
 const CUBE_GAP = 0.4;
 
 /** @type {number} */
-const PADDING = 1.0;
+const PADDING = 0.5;
 
 /** @type {number} */
 const GROUP_GAP = 1.0;
@@ -45,11 +45,11 @@ function groupWidth(moduleCount) {
  * @type {{ dark: string, blue: string, orange: string, red: string, green: string }}
  */
 const STATE_COLORS = {
-  dark:   '#373737'
-, blue:   '#3E6BFF'
-, orange: '#EFAF49'
-, red:    '#E12828'
-, green:  '#79D979'
+  dark:   '#292929'
+, blue:   '#2F50BF'
+, orange: '#B38337'
+, red:    '#A91E1E'
+, green:  '#5BA35B'
 };
 
 const C = STATE_COLORS;

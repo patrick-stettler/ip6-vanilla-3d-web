@@ -81,11 +81,6 @@ function createDPad({ label, className, up, down, left, right }) {
   container.classList.add('dpad', className);
   container.setAttribute('aria-label', label);
 
-  const title = document.createElement('span');
-  title.classList.add('dpad__label');
-  title.textContent = label;
-  container.appendChild(title);
-
   container.appendChild(createDPadButton('▲', 'up',    up));
   container.appendChild(createDPadButton('◀', 'left',  left));
   container.appendChild(createDPadButton('▶', 'right', right));
