@@ -447,7 +447,7 @@ h6 { font-size: 1rem; }
 .box.grade-zone--above .plane.back,
 .box.grade-zone--above .plane.left,
 .box.grade-zone--above .plane.right {
-    background: linear-gradient(to top, rgb(91 163 91 / 0) 0%, rgb(91 163 91 / 0.3) 100%);
+    background: rgba(var(--cl-module-passed) / 0.13)
 }
 
 .box.grade-zone--below .plane.bottom {
@@ -458,7 +458,7 @@ h6 { font-size: 1rem; }
 .box.grade-zone--below .plane.back,
 .box.grade-zone--below .plane.left,
 .box.grade-zone--below .plane.right {
-    background: linear-gradient(to top, rgb(169 30 30 / 0.3) 0%, rgb(169 30 30 / 0) 100%);
+    background: rgba(var(--cl-module-failed) /  0.13)
 }
 
 
