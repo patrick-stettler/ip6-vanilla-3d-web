@@ -50,7 +50,7 @@ function createCube({ name, status, x, y }) {
     box.element.dataset.status = status;
 
     /** @type { HTMLSpanElement[] } */
-    const labels = ["front"].map(function(face) {
+    const labels = ["front", "left", "right", "top", "back"].map(function(face) {
         const label = createLabel(name);
         box.faces[face].element.appendChild(label);
         return label;
