@@ -21,10 +21,10 @@ export { MODULES };
 const MODULES = [
 
     /* Kontext */
-    { id: 0,   title: "wisa",       group: 0,   ects: 2,    status: "ongoing",          grade: null,    prerequisites: [],          name: "Wissenschaftliches Arbeiten" },
+    { id: 0,   title: "wisa",       group: 0,   ects: 2,    status: "ongoing",          grade: null,    prerequisites: [1],          name: "Wissenschaftliches Arbeiten" },
     { id: 1,   title: "sprx",       group: 0,   ects: 2,    status: "passed",           grade: 5.5,     prerequisites: [],          name: "Schreibpraxis" },
     { id: 2,   title: "den1",       group: 0,   ects: 2,    status: "passed",           grade: 5.0,     prerequisites: [],          name: "Developing English 1 (Basic)" },    
-    { id: 3,   title: "den2",       group: 0,   ects: 2,    status: "passed",           grade: 4.5,     prerequisites: [],          name: "Developing English 2 (Basic)" },    
+    { id: 3,   title: "den2",       group: 0,   ects: 2,    status: "passed",           grade: 4.5,     prerequisites: [2],          name: "Developing English 2 (Basic)" },    
     { id: 4,   title: "patr",       group: 0,   ects: 2,    status: "passed",           grade: null,    prerequisites: [],          name: "Patentrecht" },    
     { id: 5,   title: "wusa",       group: 0,   ects: 2,    status: "not_started",      grade: null,    prerequisites: [],          name: "Weltmacht USA" },    
     
@@ -44,25 +44,25 @@ const MODULES = [
     { id: 205, title: "pro6Ia",     group: 2,   ects: 12,   status: "ongoing",          grade: null,     prerequisites: [204],      name: "Projekt 6 Informatik Bachelor Thesis" },
 
     /* Mathematik */
-    { id: 300, title: "vana",       group: 3,   ects: 3,    status: "not_started",      grade: null,    prerequisites: [],          name: "Vertiefung Analysis" },
-    { id: 301, title: "kry",        group: 3,   ects: 3,    status: "passed",           grade: 5.0,     prerequisites: [],          name: "Kryptologie" },
-    { id: 302, title: "krysi",      group: 3,   ects: 3,    status: "not_started",      grade: null,    prerequisites: [],          name: "Kryptographie und Informationssicherheit" },
-    { id: 303, title: "eti",        group: 3,   ects: 3,    status: "passed",           grade: 5.5,     prerequisites: [],          name: "Einführung in die Theoretische Informatik" },
-    { id: 304, title: "eana",       group: 3,   ects: 3,    status: "passed",           grade: 4.0,     prerequisites: [],          name: "Einführung in die Analysis" },
-    { id: 305, title: "dist",       group: 3,   ects: 3,    status: "passed",           grade: 4.5,     prerequisites: [],          name: "Diskrete Stochastik" },
-    { id: 306, title: "lag",        group: 3,   ects: 3,    status: "passed",           grade: 4.5,     prerequisites: [],          name: "Lineare Algebra und Geometrie" },
-    { id: 307, title: "mada",       group: 3,   ects: 3,    status: "passed",           grade: 5.0,     prerequisites: [],          name: "Mathematik für die Datenkommunikation" },
+    { id: 300, title: "vana",       group: 3,   ects: 3,    status: "not_started",      grade: null,    prerequisites: [304],          name: "Vertiefung Analysis" },
+    { id: 301, title: "kry",        group: 3,   ects: 3,    status: "passed",           grade: 5.0,     prerequisites: [308, 307],          name: "Kryptologie" },
+    { id: 302, title: "krysi",      group: 3,   ects: 3,    status: "not_started",      grade: null,    prerequisites: [301],          name: "Kryptographie und Informationssicherheit" },
+    { id: 303, title: "eti",        group: 3,   ects: 3,    status: "passed",           grade: 5.5,     prerequisites: [308],          name: "Einführung in die Theoretische Informatik" },
+    { id: 304, title: "eana",       group: 3,   ects: 3,    status: "passed",           grade: 4.0,     prerequisites: [308],          name: "Einführung in die Analysis" },
+    { id: 305, title: "dist",       group: 3,   ects: 3,    status: "passed",           grade: 4.5,     prerequisites: [308],          name: "Diskrete Stochastik" },
+    { id: 306, title: "lag",        group: 3,   ects: 3,    status: "passed",           grade: 4.5,     prerequisites: [308],          name: "Lineare Algebra und Geometrie" },
+    { id: 307, title: "mada",       group: 3,   ects: 3,    status: "passed",           grade: 5.0,     prerequisites: [308],          name: "Mathematik für die Datenkommunikation" },
     { id: 308, title: "mgli",       group: 3,   ects: 3,    status: "passed",           grade: 5.0,     prerequisites: [],          name: "Mathematische Grundlagen der Informatik" },
     
 
     /* Informatik */
-    { id: 400, title: "webpr",      group: 4,   ects: 3,    status: "passed",          grade: 5.5,      prerequisites: [],          name: "Web Programming" },
-    { id: 401, title: "webec",      group: 4,   ects: 3,    status: "passed",          grade: 5.5,      prerequisites: [],          name: "Web Engineering" },
+    { id: 400, title: "webpr",      group: 4,   ects: 3,    status: "passed",          grade: 5.5,      prerequisites: [405],          name: "Web Programming" },
+    { id: 401, title: "webec",      group: 4,   ects: 3,    status: "passed",          grade: 5.5,      prerequisites: [405],          name: "Web Engineering" },
     { id: 402, title: "sepC",       group: 4,   ects: 3,    status: "passed",          grade: 4.5,      prerequisites: [],          name: "Softwareentwicklungsprozesse" },
-    { id: 403, title: "stqm",       group: 4,   ects: 3,    status: "not_started",     grade: null,     prerequisites: [],          name: "Software Testing and Quality Management" },
+    { id: 403, title: "stqm",       group: 4,   ects: 3,    status: "not_started",     grade: null,     prerequisites: [404],          name: "Software Testing and Quality Management" },
     { id: 404, title: "swc",        group: 4,   ects: 3,    status: "passed",          grade: 4.0,      prerequisites: [],          name: "Software Construction" },
     { id: 405, title: "depa",       group: 4,   ects: 3,    status: "failed_once",     grade: 3.5,      prerequisites: [],          name: "Design Patterns" },
-    { id: 406, title: "req",        group: 4,   ects: 3,    status: "passed",          grade: 4.5,      prerequisites: [],          name: "Requirements Engineering" },
+    { id: 406, title: "req",        group: 4,   ects: 3,    status: "passed",          grade: 4.5,      prerequisites: [407],          name: "Requirements Engineering" },
     { id: 407, title: "sweGL",      group: 4,   ects: 3,    status: "passed",          grade: 5.0,      prerequisites: [],          name: "Software Engineering Grundlagen" },
 
     /* Management */
