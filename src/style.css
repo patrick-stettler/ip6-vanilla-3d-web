@@ -1,0 +1,511 @@
+@charset "utf-8";
+
+/********************************************************************************************************************************
+
+    [Table of contents]
+
+    01. General
+    02. Szene
+    03. Switch
+    04. Controls
+    05. Bodenplatte
+    06. Modulgruppen
+    07. Würfel
+    08. Abhängigkeiten
+    09. Bewertungsbox
+    10. Notenskala
+
+
+/********************************************************************************************************************************/
+/***** General ******************************************************************************************************************/
+/********************************************************************************************************************************/
+
+:root {
+    --font: "Inter", Arial, sans-serif;
+
+    --cl-module-passed: 98 208 98;
+    --cl-module-critical: 255 150 30;
+    --cl-module-failed: 255 46 46;
+    --cl-module-ongoing: 55 101 255;
+    --cl-module-open: 68 68 68;
+
+    --cl-bluetone1: 14 25 42;
+    --cl-bluetone2: 23 39 64;
+    --cl-bluetone3: 61 82 114;
+    --cl-bluetone4: 133 152 182;
+    --cl-bluetone5: 206 216 233;
+    --cl-bluetone6: 235 239 245;
+
+    --cl-white: 255 255 255;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+html,
+body {
+    overflow: hidden;
+    font-family: var(--font);
+    font-weight: 300;
+    color: rgb(var(--cl-white));
+    background: rgb(var(--cl-bluetone1));
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0;
+}
+
+h1 { font-size: 4.5rem; }
+h2 { font-size: 3.5rem; }
+h3 { font-size: 2.5rem; }
+h4 { font-size: 2rem; }
+h5 { font-size: 1.5rem; }
+h6 { font-size: 1rem; }
+
+
+/*******************************************************************************************************************************/
+/***** Szene *******************************************************************************************************************/
+/*******************************************************************************************************************************/
+
+#scene {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    perspective-origin: center center;
+}
+
+#scene.view-transitioning .coords {
+    transition: transform 0.7s ease;
+}
+
+.box.object-3d {
+    transition: transform 0.6s ease;
+}
+
+#svg-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+
+/*******************************************************************************************************************************/
+/***** Switch ******************************************************************************************************************/
+/*******************************************************************************************************************************/
+
+#view-selector {
+    --switch-width: 4.5em;
+    --switch-height: 2.2em;
+    --switch-gap: 0.2em;
+    --toggle-size: 1.8em;
+
+    position: fixed;
+    top: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.8em;
+}
+
+#view-selector p {
+    font-family: var(--font);
+    font-size: 0.9em;
+    font-weight: 700;
+    color: rgb(255 255 255 / 0.8);
+    text-shadow: 0 1px 4px rgb(0 0 0 / 0.9);
+}
+
+#view-selector label {
+    display: block;
+    position: relative;
+    width: var(--switch-width);
+    height: var(--switch-height);
+    border-radius: var(--switch-width);
+    border: 1px solid rgb(255 255 255 / 0.3);
+    background: rgb(255 255 255 / 0.1);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    cursor: pointer;
+}
+
+#view-selector label::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: var(--switch-gap);
+    transform: translateY(-50%);
+    width: var(--toggle-size);
+    height: var(--toggle-size);
+    border-radius: 100%;
+    background: rgb(var(--cl-white) / 0.8);
+    transition: left 0.3s ease;
+}
+
+#view-selector input[type="checkbox"]:checked + label::after {
+    left: calc(var(--switch-width) - (var(--toggle-size) + var(--switch-gap)));
+}
+
+#view-selector input[type="checkbox"] {
+    display: none;
+    height: 0;
+    width: 0;
+}
+
+
+/*******************************************************************************************************************************/
+/***** Controls ****************************************************************************************************************/
+/*******************************************************************************************************************************/
+
+.dpad {
+    position: fixed;
+    bottom: 1.5rem;
+    z-index: 20;
+    display: grid;
+    grid-template-areas:
+        ".     up      ."
+        "left  center  right"
+        ".     down    .";
+    grid-template-columns: 2.5rem 2.5rem 2.5rem;
+    grid-template-rows: 2.5rem 2.5rem 2.5rem;
+    gap: 0.3rem;
+    justify-items: center;
+}
+
+.dpad--rotate {
+    right: 1.5rem;
+}
+
+.dpad__button {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    color: rgb(var(--cl-white) / 0.9);
+    background: rgb(var(--cl-white) / 0.1);
+    border: 1px solid rgb(var(--cl-white) / 0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+    touch-action: none;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.dpad__button svg {
+    width: 1.2rem;
+    height: 1.2rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.dpad__button:hover {
+    background: rgb(var(--cl-white) / 0.2);
+    border-color: rgb(var(--cl-white) / 0.5);
+}
+
+.dpad__button:active {
+    background: rgb(var(--cl-white) / 0.3);
+}
+
+.dpad__button--up {
+    grid-area: up;
+}
+
+.dpad__button--down {
+    grid-area: down;
+}
+
+.dpad__button--left {
+    grid-area: left;
+}
+
+.dpad__button--right {
+    grid-area: right;
+}
+
+.dpad__button--center {
+    grid-area: center;
+}
+
+
+/*******************************************************************************************************************************/
+/***** Bodenplatte *************************************************************************************************************/
+/*******************************************************************************************************************************/
+
+.base-plane.plane {
+    --base-color: rgb(var(--cl-bluetone2));
+    --base-transparency: 0%;
+    --border-color: #3a5a7a;
+    --border-transparency: 0%;
+    --border-width: 2px;
+}
+
+
+/*******************************************************************************************************************************/
+/***** Modulgruppen ************************************************************************************************************/
+/*******************************************************************************************************************************/
+
+.group-plane.plane {
+    --base-color: rgb(var(--cl-white));
+    --base-transparency: 100%;
+    --border-color: rgb(var(--cl-white));
+    --border-transparency: 55%;
+    --border-width: 2px;
+
+    place-items: start center;
+}
+
+.group-plane--red-zone.plane {
+    --base-color: rgb(var(--cl-module-failed));
+    --border-color: rgb(var(--cl-module-failed));
+}
+
+.group-plane--passive.plane {
+    pointer-events: none;
+}
+
+.group-label {
+    font-family: var(--font);
+    font-size: calc(0.2 * var(--display-unit));
+    font-weight: 400;
+    color: rgb(var(--cl-white) / 0.8);
+    pointer-events: none;
+    padding: calc(0.1 * var(--display-unit)) calc(0.1 * var(--display-unit));
+    text-shadow: 0 1px 4px rgb(0 0 0 / 0.9);
+    white-space: nowrap;
+    background: rgb(var(--cl-bluetone2));
+    transform: translateY(-50%);
+}
+
+
+/*******************************************************************************************************************************/
+/***** Würfel ******************************************************************************************************************/
+/*******************************************************************************************************************************/
+
+.cube[data-status="not_started"] {  --cl-cube: var(--cl-module-open); }
+.cube[data-status="ongoing"] {      --cl-cube: var(--cl-module-ongoing); }
+.cube[data-status="failed_once"] {   --cl-cube: var(--cl-module-critical); }
+.cube[data-status="failed_twice"] { --cl-cube: var(--cl-module-failed); }
+.cube[data-status="passed"] {       --cl-cube: var(--cl-module-passed); }
+
+.cube--interactive {
+    cursor: pointer;
+}
+
+.cube .plane {
+    background: none;
+    border: none;
+    backface-visibility: hidden;
+    transition: all 300ms ease-in-out;
+    opacity: 1.0;
+}
+
+.cube .plane.top {
+    background: linear-gradient(305deg, rgba(0, 0, 0, 0.20) 15%, rgba(0, 0, 0, 0.00) 85%), rgb(var(--cl-cube) / 1.0);
+    border: 1px solid rgb(var(--cl-white));
+}
+
+.cube .plane.front {
+    background: linear-gradient(305deg, rgba(0, 0, 0, 0.20) 15%, rgba(0, 0, 0, 0.00) 85%), rgb(var(--cl-cube) / 1.0);
+    border: 1px solid rgb(var(--cl-white));
+}
+
+.cube .plane.back {
+    background: linear-gradient(305deg, rgba(0, 0, 0, 0.20) 15%, rgba(0, 0, 0, 0.00) 85%), rgb(var(--cl-cube) / 1.0);
+    border: 1px solid rgb(var(--cl-white));
+}
+
+.cube .plane.left {
+    background: linear-gradient(305deg, rgba(0, 0, 0, 0.20) 15%, rgba(0, 0, 0, 0.00) 85%), rgb(var(--cl-cube) / 1.0);
+    border: 1px solid rgb(var(--cl-white));
+}
+
+.cube .plane.right {
+    background: linear-gradient(305deg, rgba(0, 0, 0, 0.20) 15%, rgba(0, 0, 0, 0.00) 85%), rgb(var(--cl-cube) / 1.0);
+    border: 1px solid rgb(var(--cl-white));
+}
+
+.cube .plane.bottom {
+    background: linear-gradient(305deg, rgba(0, 0, 0, 0.20) 15%, rgba(0, 0, 0, 0.00) 85%), rgb(var(--cl-cube) / 1.0);
+    border: 1px solid rgb(var(--cl-white));
+}
+
+.box.cube .plane.cube--dimmed {
+    opacity: 0.1;
+}
+
+.box.cube .plane.top.cube--highlighted {
+    border-color: rgb(var(--cl-white) / 1);
+    box-shadow:
+        0 0 15px rgb(var(--cl-cube) / 1),
+        0 0 40px rgb(var(--cl-cube) / 0.8),
+        0 0 90px rgb(var(--cl-cube) / 0.6),
+        inset 0 0 25px rgb(var(--cl-white) / 0.8);
+}
+
+.box.cube .plane.cube--highlighted:not(.top) {
+    border-color: rgb(var(--cl-white) / 0.9);
+    box-shadow:
+        0 0 10px rgb(var(--cl-cube) / 0.9),
+        0 0 30px rgb(var(--cl-cube) / 0.7),
+        0 0 60px rgb(var(--cl-cube) / 0.4);
+}
+
+.cube-label {
+    display: block;
+    font-family: var(--font);
+    font-size: calc(0.3 * var(--display-unit));
+    font-weight: 700;
+    color: rgb(var(var(--cl-white)));
+    text-align: center;
+    pointer-events: none;
+    width: 100%;
+    padding: 0.1em;
+}
+
+
+/*******************************************************************************************************************************/
+/***** Abhängigkeiten **********************************************************************************************************/
+/*******************************************************************************************************************************/
+
+@keyframes connector-pulse {
+    from {
+        filter:
+            drop-shadow(0 0 4px rgb(255 214 0 / 0.9))
+            drop-shadow(0 0 14px rgb(255 214 0 / 0.6));
+    }
+
+    to {
+        filter:
+            drop-shadow(0 0 8px rgb(255 214 0 / 1))
+            drop-shadow(0 0 26px rgb(255 214 0 / 0.8));
+    }
+}
+
+.connector-path {
+    fill: none;
+    stroke: url(#connector-gradient);
+    stroke-width: 3px;
+    stroke-linecap: round;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    animation: connector-pulse 2.2s ease-in-out infinite alternate;
+}
+
+.connector-path--visible {
+    opacity: 1;
+}
+
+
+/*******************************************************************************************************************************/
+/***** Bewertungszbox **********************************************************************************************************/
+/*******************************************************************************************************************************/
+
+.box.grade-zone .plane {
+    pointer-events: none;
+    border: none;
+    backface-visibility: hidden;
+}
+
+.box.grade-zone--above .plane.bottom,
+.box.grade-zone--below .plane.top {
+    display: none;
+}
+
+.box.grade-zone--hidden,
+.plane.grade-zone--hidden {
+    display: none;
+}
+
+.box.grade-zone--above .plane.top {
+    background: rgb(var(--cl-module-passed) / 0.3);
+}
+
+.box.grade-zone--above .plane.front,
+.box.grade-zone--above .plane.back,
+.box.grade-zone--above .plane.left,
+.box.grade-zone--above .plane.right {
+    background: linear-gradient(to top, rgb(91 163 91 / 0) 0%, rgb(91 163 91 / 0.3) 100%);
+}
+
+.box.grade-zone--below .plane.bottom {
+    background: rgb(var(--cl-module-failed) / 0.3);
+}
+
+.box.grade-zone--below .plane.front,
+.box.grade-zone--below .plane.back,
+.box.grade-zone--below .plane.left,
+.box.grade-zone--below .plane.right {
+    background: linear-gradient(to top, rgb(169 30 30 / 0.3) 0%, rgb(169 30 30 / 0) 100%);
+}
+
+
+/*******************************************************************************************************************************/
+/***** Notenskala **************************************************************************************************************/
+/*******************************************************************************************************************************/
+
+.plane.grade-scale {
+    background: repeating-linear-gradient(
+        to top,
+        rgb(var(--cl-white) / 0.7) 0,
+        rgb(var(--cl-white) / 0.7) calc(0.4 * var(--display-unit)),
+        transparent calc(0.4 * var(--display-unit)),
+        transparent calc(0.65 * var(--display-unit))
+    );
+    border: none;
+    pointer-events: none;
+}
+
+.grade-scale__tick {
+    position: absolute;
+    left: 0.5em;
+    transform: translateY(-50%);
+    font-family: var(--font);
+    font-size: calc(0.16 * var(--display-unit));
+    color: rgb(var(--cl-white) / 0.85);
+    white-space: nowrap;
+}
+
+.grade-scale__tick--0  { top: 100%; }
+.grade-scale__tick--1  { top: 96.93%; }
+.grade-scale__tick--2  { top: 93.86%; }
+.grade-scale__tick--3  { top: 90.79%; }
+.grade-scale__tick--4  { top: 87.72%; }
+.grade-scale__tick--5  { top: 84.65%; }
+.grade-scale__tick--6  { top: 50%; }
+.grade-scale__tick--7  { top: 37.5%; }
+.grade-scale__tick--8  { top: 25%; }
+.grade-scale__tick--9  { top: 12.5%; }
+.grade-scale__tick--10 { top: 0%; }
+
+.grade-scale__tick::before {
+    content: "";
+    position: absolute;
+    left: -1.1em;
+    top: 50%;
+    width: 0.9em;
+    border-top: 1.5px solid rgb(var(--cl-white) / 0.7);
+    transform: translateY(-50%);
+}

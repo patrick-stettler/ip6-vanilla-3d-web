@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dependency / Grade Views — Module Groups</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <svg id="svg-overlay" aria-hidden="true">
+    <defs>
+      <!-- Repeating vertical band that scrolls upward (bottom → top), giving
+           connector strokes a flowing "liquid" gradient instead of dashes. -->
+      <linearGradient id="connector-gradient" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="150" spreadMethod="repeat">
+        <stop offset="0%"   stop-color="#FFD600" stop-opacity="0.6" />
+        <stop offset="50%"  stop-color="#FFFDE7" stop-opacity="1" />
+        <stop offset="100%" stop-color="#FFD600" stop-opacity="0.6" />
+        <animateTransform attributeName="gradientTransform" type="translate" from="0 0" to="0 -150" dur="2.5s" repeatCount="indefinite" />
+      </linearGradient>
+    </defs>
+  </svg>
+  <div id="view-selector">
+    <p>Beziehungen</p>
+    <input id="switch" type="checkbox">
+    <label for="switch"></label>
+    <p>Bewertungen</p>
+  </div>
+  <div id="scene"></div>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
