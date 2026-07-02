@@ -1,0 +1,456 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html, body {
+  overflow: hidden;
+  background: #0d1117;
+}
+
+#scene {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  perspective-origin: center center;
+}
+
+/*
+ * Only animate the camera rotation during a view-mode switch (toggled on
+ * #scene for the duration, see ViewModeController.js) — drag/D-Pad rotation
+ * stays instant, since animating every continuous drag update would make
+ * the camera lag behind the pointer.
+ */
+#scene.view-transitioning .coords {
+  transition: transform 0.7s ease;
+}
+
+/* ── SVG connector overlay ───────────────────────────────────────────────── */
+
+#svg-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ── View selector toggle switch ──────────────────────────────────────────── */
+
+#view-selector {
+  --switch-width: 4.5em;
+  --switch-height: 2.2em;
+  --switch-gap: 0.2em;
+  --toggle-size: 1.8em;
+
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.8em;
+}
+
+#view-selector p {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.9em;
+  font-weight: 700;
+  color: rgb(255 255 255 / 0.8);
+  text-shadow: 0 1px 4px rgb(0 0 0 / 0.9);
+}
+
+#view-selector label {
+  display: block;
+  position: relative;
+  width: var(--switch-width);
+  height: var(--switch-height);
+  border-radius: var(--switch-width);
+  border: 1px solid rgb(255 255 255 / 0.3);
+  background: rgb(255 255 255 / 0.1);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  cursor: pointer;
+}
+
+#view-selector label::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: var(--switch-gap);
+  transform: translateY(-50%);
+  width: var(--toggle-size);
+  height: var(--toggle-size);
+  border-radius: 100%;
+  background: rgb(255 255 255 / 0.8);
+  transition: left 0.3s ease;
+}
+
+#view-selector input[type="checkbox"]:checked + label::after {
+  left: calc(var(--switch-width) - (var(--toggle-size) + var(--switch-gap)));
+}
+
+#view-selector input[type="checkbox"] {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+/* ── Interactive cubes ───────────────────────────────────────────────────── */
+
+.cube--interactive {
+  cursor: pointer;
+}
+
+/* ── Smooth height transition between dependency and grade mode ─────────── */
+
+.box.object-3d {
+  transition: transform 0.6s ease;
+}
+
+/* ── D-pad navigation controls ───────────────────────────────────────────── */
+
+.dpad {
+  position: fixed;
+  bottom: 1.5rem;
+  z-index: 20;
+  display: grid;
+  grid-template-areas:
+    ".     up      ."
+    "left  center  right"
+    ".     down    .";
+  grid-template-columns: 2.5rem 2.5rem 2.5rem;
+  grid-template-rows: 2.5rem 2.5rem 2.5rem;
+  gap: 0.3rem;
+  justify-items: center;
+}
+
+.dpad--rotate {
+  right: 1.5rem;
+}
+
+.dpad__button {
+  width: 100%;
+  height: 100%;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgb(255 255 255 / 0.9);
+  background: rgb(255 255 255 / 0.1);
+  border: 1px solid rgb(255 255 255 / 0.3);
+  border-radius: 50%;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.dpad__button:hover {
+  background: rgb(255 255 255 / 0.2);
+  border-color: rgb(255 255 255 / 0.5);
+}
+
+.dpad__button:active {
+  background: rgb(255 255 255 / 0.3);
+}
+
+.dpad__button--up     { grid-area: up; }
+.dpad__button--down   { grid-area: down; }
+.dpad__button--left   { grid-area: left; }
+.dpad__button--right  { grid-area: right; }
+.dpad__button--center { grid-area: center; font-size: 0.9rem; }
+
+/* ── Dependency highlight / dim ──────────────────────────────────────────── */
+
+/*
+ * Applied per-face rather than on .box: opacity/filter on the box root would
+ * force its preserve-3d faces to flatten into a single plane.
+ */
+.box .plane {
+  transition:
+    opacity       0.3s ease
+  , box-shadow    0.3s ease
+  , border-color  0.3s ease
+  ;
+}
+
+.box .plane.cube--dimmed {
+  opacity: 0.2;
+}
+
+/* Glow effect, matching playground/glow/style.css */
+
+.box .plane.top.cube--highlighted {
+  border-color: rgb(255 255 255 / 1);
+  box-shadow:
+    0   0  15px rgb(var(--cl-c) / 1.0)
+  , 0   0  40px rgb(var(--cl-c) / 0.8)
+  , 0   0  90px rgb(var(--cl-c) / 0.6)
+  , inset 0 0 25px rgb(255 255 255 / 0.8)
+  ;
+}
+
+.box .plane.cube--highlighted:not(.top) {
+  border-color: rgb(255 255 255 / 0.9);
+  box-shadow:
+    0 0 10px rgb(var(--cl-c) / 0.9)
+  , 0 0 30px rgb(var(--cl-c) / 0.7)
+  , 0 0 60px rgb(var(--cl-c) / 0.4)
+  ;
+}
+
+/* ── Dependency connector lines ──────────────────────────────────────────── */
+
+/*
+ * The flow itself is driven by #connector-gradient (see index.html), a
+ * repeating band that scrolls upward — from prereq to module = bottom to
+ * top — giving a liquid look instead of marching dashes. A slower
+ * ease-in-out pulse breathes the glow on top of that.
+ */
+@keyframes connector-pulse {
+  from {
+    filter:
+      drop-shadow(0 0  4px rgb(255 214 0 / 0.9))
+      drop-shadow(0 0 14px rgb(255 214 0 / 0.6))
+    ;
+  }
+  to {
+    filter:
+      drop-shadow(0 0  8px rgb(255 214 0 / 1.0))
+      drop-shadow(0 0 26px rgb(255 214 0 / 0.8))
+    ;
+  }
+}
+
+.connector-path {
+  fill: none;
+  stroke: url(#connector-gradient);
+  stroke-width: 3px;
+  stroke-linecap: round;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  animation: connector-pulse 2.2s ease-in-out infinite alternate;
+}
+
+/* Added once the path's `d` is first set to a correct, on-screen shape — see DependencyController.js. */
+.connector-path--visible {
+  opacity: 1;
+}
+
+/* ── Group plane: outline only, label centered on the top edge ──────────── */
+
+/*
+ * Two-class selector (0,2,0) overrides .object-3d (0,1,0) without !important.
+ * place-items: start center keeps the label on the top edge (the group's
+ * line) while centering it across the group's width.
+ */
+.group-plane.plane {
+  place-items: start center;
+}
+
+.group-label {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: calc(0.2 * var(--display-unit));
+  font-weight: 400;
+  color: rgb(255 255 255 / 0.8);
+  pointer-events: none;
+  padding: calc(0.1 * var(--display-unit)) calc(0.1 * var(--display-unit));
+  text-shadow: 0 1px 4px rgb(0 0 0 / 0.9);
+  white-space: nowrap;
+  background: #1e2a3a;
+  transform: translateY(-50%);
+}
+
+/* ── Glass face effect ───────────────────────────────────────────────────── */
+
+.box .plane {
+  background: none;
+  border: none;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.box .plane.top {
+  background:
+    radial-gradient(ellipse 150% 150% at 0% 100%,
+      rgb(255 255 255 / 0.5)  0%,
+      rgb(255 255 255 / 0.2) 30%,
+      rgb(255 255 255 / 0)    70%),
+    rgb(var(--cl-c) / 1);
+  border: 1px solid #fff;
+  box-shadow:
+    inset 0   0  60px rgb(255 255 255 / 0.4),
+    inset 0   0  30px rgb(255 255 255 / 0.2),
+    inset 1px 1px  0  rgb(255 255 255 / 0.5);
+}
+
+.box .plane.front {
+  background:
+    linear-gradient(135deg,
+      rgb(255 255 255 / 0.3)  0%,
+      rgb(255 255 255 / 0.1) 40%,
+      rgb(255 255 255 / 0)   100%),
+    rgb(var(--cl-c) / 1);
+  border: 1px solid #fff;
+  box-shadow:
+    inset 0  1px 0 rgb(255 255 255 / 0.4),
+    inset 0 -1px 0 rgb(255 255 255 / 0.1);
+}
+
+.box .plane.back {
+  background:
+    linear-gradient(180deg,
+      rgb(255 255 255 / 0.1)  0%,
+      rgb(255 255 255 / 0)   100%),
+    rgb(var(--cl-c) / 1);
+  border: 1px solid #fff;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.2),
+    inset 0 0   0 rgb(255 255 255 / 0.1);
+}
+
+.box .plane.left {
+  background:
+    linear-gradient(180deg,
+      rgb(255 255 255 / 0.2)  0%,
+      rgb(255 255 255 / 0)   100%),
+    rgb(var(--cl-c) / 1);
+  border: 1px solid #fff;
+  box-shadow:
+    inset 1px 0 0 rgb(255 255 255 / 0.4),
+    inset 0   0 0 rgb(255 255 255 / 0.1);
+}
+
+.box .plane.right {
+  background:
+    linear-gradient(180deg,
+      rgb(255 255 255 / 0.1)  0%,
+      rgb(255 255 255 / 0)   100%),
+    rgb(var(--cl-c) / 1);
+  border: 1px solid #fff;
+  box-shadow:
+    inset -1px 0 0 rgb(255 255 255 / 0.3),
+    inset  0   0 0 rgb(255 255 255 / 0.1);
+}
+
+.box .plane.bottom {
+  background: rgb(var(--cl-c) / 1);
+  border: 1px solid #fff;
+}
+
+/* ── Grade zones: translucent volumes above/below the base plane ────────── */
+
+/*
+ * Decorative only — pointer-events: none lets clicks fall through to the
+ * cubes and the background underneath. The cap touching the base plane
+ * (bottom face of the green zone, top face of the red zone) is hidden so it
+ * doesn't paint an opaque seam right on the ground.
+ */
+.box.grade-zone .plane {
+  pointer-events: none;
+  border: none;
+}
+
+.box.grade-zone--above .plane.bottom,
+.box.grade-zone--below .plane.top {
+  display: none;
+}
+
+/*
+ * Two-class selectors (matching .box.grade-zone--hidden / .plane.grade-zone--hidden)
+ * outrank the framework's own single-class `.object-3d { display: grid; }` and
+ * `.plane { ... }` rules regardless of stylesheet load order — vanilla_3d injects
+ * its CSS at runtime, after this stylesheet, so equal-specificity rules here
+ * would otherwise lose the cascade.
+ */
+.box.grade-zone--hidden,
+.plane.grade-zone--hidden {
+  display: none;
+}
+
+.box.grade-zone--above .plane.top {
+  background: rgb(91 163 91 / 0.3);
+}
+
+.box.grade-zone--above .plane.front,
+.box.grade-zone--above .plane.back,
+.box.grade-zone--above .plane.left,
+.box.grade-zone--above .plane.right {
+  background: linear-gradient(to top, rgb(91 163 91 / 0) 0%, rgb(91 163 91 / 0.3) 100%);
+}
+
+.box.grade-zone--below .plane.bottom {
+  background: rgb(169 30 30 / 0.3);
+}
+
+.box.grade-zone--below .plane.front,
+.box.grade-zone--below .plane.back,
+.box.grade-zone--below .plane.left,
+.box.grade-zone--below .plane.right {
+  background: linear-gradient(to top, rgb(169 30 30 / 0.3) 0%, rgb(169 30 30 / 0) 100%);
+}
+
+/* ── Grade scale: vertical ruler shown beside a clicked cube in grade mode ── */
+
+/*
+ * Two-class selector (.plane.grade-scale) outranks the framework's own
+ * single-class `.plane { background-color: ...; border: ...; }` rule
+ * regardless of stylesheet load order (see the grade-zone note above).
+ * The dashes are a repeating gradient rather than `border-style: dashed` —
+ * the native dashed border can't have its dash length customized, while a
+ * gradient lets the ruler use long, clearly visible dashes. Ticks are
+ * absolutely-positioned children placed by their --t (0 = bottom, 1 = top).
+ */
+.plane.grade-scale {
+  background: repeating-linear-gradient(
+    to top
+  , rgb(255 255 255 / 0.7) 0
+  , rgb(255 255 255 / 0.7) calc(0.4 * var(--display-unit))
+  , transparent             calc(0.4 * var(--display-unit))
+  , transparent             calc(0.65 * var(--display-unit))
+  );
+  border: none;
+  pointer-events: none;
+}
+
+.grade-scale__tick {
+  position: absolute;
+  left: 0.5em;
+  top: calc((1 - var(--t)) * 100%);
+  transform: translateY(-50%);
+  font-family: system-ui, sans-serif;
+  font-size: calc(0.16 * var(--display-unit));
+  color: rgb(255 255 255 / 0.85);
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.9);
+  white-space: nowrap;
+}
+
+.grade-scale__tick::before {
+  content: '';
+  position: absolute;
+  left: -1.1em;
+  top: 50%;
+  width: 0.9em;
+  border-top: 1.5px solid rgb(255 255 255 / 0.7);
+  transform: translateY(-50%);
+}
+
+/* ── Cube label ──────────────────────────────────────────────────────────── */
+
+.cube-label {
+  display: block;
+  font-family: system-ui, sans-serif;
+  font-size: calc(0.3 * var(--display-unit));
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  pointer-events: none;
+  width: 100%;
+  padding: 0.1em;
+}
