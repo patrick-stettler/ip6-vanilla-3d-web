@@ -1,11 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="de">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dependency / Grade Views — Module Groups</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Vanilla 3D Web</title>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="">
+	<meta name="publisher" content="">
+	<meta name="robots" content="index, follow">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- -->
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
+
 <body>
   <svg id="svg-overlay" aria-hidden="true">
     <defs>
@@ -19,13 +29,28 @@
       </linearGradient>
     </defs>
   </svg>
+  
+  <div id="legend">
+    <h5>Legende</h5>
+    <div class="items-container">
+      <div class="item"><div class="color-box" data-status="passed"></div><p>bestanden</p></div>
+      <div class="item"><div class="color-box" data-status="failed"></div><p>fehlgeschlagen</p></div>
+      <div class="item"><div class="color-box" data-status="critical"></div><p>kritisch</p></div>
+      <div class="item"><div class="color-box" data-status="open"></div><p>offen</p></div>
+      <div class="item"><div class="color-box" data-status="ongoing"></div><p>laufend</p></div>
+    </div>
+  </div>
+
   <div id="view-selector">
     <p>Beziehungen</p>
     <input id="switch" type="checkbox">
     <label for="switch"></label>
     <p>Bewertungen</p>
   </div>
+
   <div id="scene"></div>
+
   <script type="module" src="main.js"></script>
+
 </body>
 </html>

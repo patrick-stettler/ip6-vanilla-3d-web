@@ -6,14 +6,15 @@
 
     01. General
     02. Szene
-    03. Switch
-    04. Controls
-    05. Bodenplatte
-    06. Modulgruppen
-    07. Würfel
-    08. Abhängigkeiten
-    09. Bewertungsbox
-    10. Notenskala
+    03. Legende
+    04. Switch
+    05. Controls
+    06. Bodenplatte
+    07. Modulgruppen
+    08. Würfel
+    09. Abhängigkeiten
+    10. Bewertungsbox
+    11. Notenskala
 
 
 /********************************************************************************************************************************/
@@ -101,6 +102,53 @@ h6 { font-size: 1rem; }
     pointer-events: none;
     z-index: 10;
 }
+
+
+/*******************************************************************************************************************************/
+/***** Legende******************************************************************************************************************/
+/*******************************************************************************************************************************/
+
+#legend {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25em;
+    width: 15%;
+    padding: 2em;
+    border: 1px solid rgba(var(--cl-white) / 0.5);
+    background: rgba(var(--cl-bluetone1) / 0.5);
+    backdrop-filter: blur(1em);
+    position: absolute;
+    top: 3em;
+    right: 3em;
+    z-index: 1000;
+}
+
+#legend .items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6em;
+}
+
+#legend .items-container .item {
+    display: flex;
+    flex-direction: row;
+    gap: 0.6em;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#legend .items-container .item .color-box {
+    width: 1.3em;
+    height: 1.3em;
+    border: 1px solid rgba(var(--cl-white) / 0.5);
+    background: rgb(var(--cl-status));
+}
+
+.color-box[data-status="not_started"] { --cl-status: var(--cl-module-open); }
+.color-box[data-status="ongoing"] {     --cl-status: var(--cl-module-ongoing); }
+.color-box[data-status="critical"] {    --cl-status: var(--cl-module-critical); }
+.color-box[data-status="failed"] {      --cl-status: var(--cl-module-failed); }
+.color-box[data-status="passed"] {      --cl-status: var(--cl-module-passed); }
 
 
 /*******************************************************************************************************************************/
